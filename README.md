@@ -1,50 +1,55 @@
-# Welcome to your Expo app 👋
+# MEC Eatz 🍴
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**MEC Eatz** is a comprehensive **college canteen management system** that enables  
+students to place cashless food orders and canteen staff to manage menus, orders, and  
+sales efficiently.  
 
-## Get started
+This repository contains the **mobile application** (built with React Native / Expo) and  
+backend API (Express.js + PostgreSQL) that power the system.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🌟 Features
 
-2. Start the app
+### Student App
+- 📋 **Daily Menu & Specials** – Browse real-time menu updates.
+- 🛒 **Order & Pay** – Place orders and pay instantly using UPI or other digital methods.
+- 🔑 **QR Code Pickup** – Receive a QR/verification code for fast, contactless pickup.
+- 💳 **Prepaid Wallet (Planned)** – Deposit credits at the start of the month and pay via biometric authentication (future upgrade).
+- 📈 **Transaction History** – Track spending and manage monthly expenses.
 
-   ```bash
-   npx expo start
-   ```
+### Canteen Dashboard
+- 🍳 **Menu Management** – Add or edit dishes and specials.
+- 💵 **Sales & Revenue Tracking** – Real-time order monitoring and revenue analytics.
+- 📊 **Top-Selling Dishes** – Data-driven insights to reduce food waste.
 
-In the output, you'll find options to open the app in a
+### Future Enhancements
+- 🔐 **Biometric Wallet Integration**
+- 🤖 **Machine Learning** for demand forecasting and personalized recommendations.
+- 🔗 **Blockchain** for tamper-proof transaction logs or tokenized wallet credits.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🏗️ Tech Stack
+| Layer        | Technology |
+|--------------|------------|
+| **Mobile App** | React Native (Expo), NativeWind, Recharts |
+| **Backend**   | Express.js |
+| **Database**  | Supabase |
+| **Payments**  | UPI / Razorpay Intent (planned) |
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 👥 Team
 
-```bash
-npm run reset-project
-```
+   - Ajay Krishna D
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+   - Abhay Murali M
 
-## Learn more
+   - Gautham S Krishna
 
-To learn more about developing your project with Expo, look at the following resources:
+   - Abhishek A
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+> “Bridging operational efficiency with student convenience for a smarter canteen experience.”
