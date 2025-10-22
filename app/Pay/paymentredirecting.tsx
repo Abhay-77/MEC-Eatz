@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import "../../global.css";
+import { supabase } from "@/lib/supabase";
 
 const UPIPaymentScreen = () => {
   const [upiId, setUpiId] = useState("ajaykrishna2405@okhdfcbank");
@@ -14,20 +15,66 @@ const UPIPaymentScreen = () => {
       return;
     }
 
-    const name = "Ajay Krishna";
+    const name = "MEC Eatz";
     const upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(name)}&am=${amount}&tn=${encodeURIComponent(
       note
     )}&cu=INR`;
 
-    try {
+     try {
       const supported = await Linking.canOpenURL(upiUrl);
       if (supported) {
         await Linking.openURL(upiUrl);
+
+        // Ask user for manual confirmation
+        Alert.alert(
+          "Payment Initiated",
+          "Did the payment succeed?",
+          [
+            { text: "No", onPress: () => console.log("Payment failed") },
+            { text: "Yes", onPress: () => saveTransaction(amount) },
+          ]
+        );
       } else {
         Alert.alert("Error", "No UPI app found on this device.");
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to open UPI app: " + (error instanceof Error ? error.message : "Unknown error"));
+      Alert.alert(
+        "Error",
+        "Failed to open UPI app: " + (error instanceof Error ? error.message : "Unknown error")
+      );
+    }
+  };
+
+  interface TransactionData {
+    user_id: string;
+    price: number;
+    created_at: string;
+  }
+
+  const saveTransaction = async (amount: string): Promise<void> => {
+    try {
+      // Insert into transaction_history table
+      const user = await supabase.auth.getUser();
+      const userId = user.data.user?.id;
+      
+      if (!userId) {
+        Alert.alert("Error", "User not authenticated.");
+        return;
+      }
+      
+      const transactionData: TransactionData = {
+        user_id: userId,
+        price: parseFloat(amount),
+        created_at: new Date().toISOString()
+      };
+
+      await supabase.from("Transaction_History").insert(transactionData);
+
+      Alert.alert("Success", "Transaction recorded successfully!");
+      setAmount("");  // Reset input
+      setNote("Payment");
+    } catch (error) {
+      Alert.alert("Error", "Failed to save transaction: " + (error instanceof Error ? error.message : "Unknown error"));
     }
   };
 
