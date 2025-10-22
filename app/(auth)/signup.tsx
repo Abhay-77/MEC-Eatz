@@ -1,28 +1,48 @@
 import "../../global.css";
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import { supabase } from "../../lib/supabase";
 import { Link } from "expo-router";
 
 export default function SignUpScreen() {
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
+    // const { error } = await supabase.auth.signUp({
+    //   email,
+    //   password,
+    // });
+
+    // if (error) {
+    //   Alert.alert("Sign Up Error", error.message);
+    // } else {
+    //   Alert.alert(
+    //     "Success!",
+    //     "Please check your email for a confirmation link.",
+    //   );
+    // }
+    const res = await fetch("http://localhost:3000/api/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        username:username,
+        email: email,
+        password: password,
+      }),
     });
 
-    if (error) {
-      Alert.alert("Sign Up Error", error.message);
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      alert("Signup Error: " + (data.message || "Unknown error"));
     } else {
-      Alert.alert(
-        "Success!",
-        "Please check your email for a confirmation link.",
-      );
+      alert("Signup successful!");
     }
     setLoading(false);
   };
@@ -35,6 +55,17 @@ export default function SignUpScreen() {
         <Text className="text-gray-500 text-center mb-6">
           Join the smart canteen experience.
         </Text>
+
+        <View className="mb-4">
+          <Text className="font-semibold">Username</Text>
+          <TextInput
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+            placeholder="Enter your username"
+            className="border border-gray-300 rounded-lg px-3 py-2 mt-1"
+          />
+        </View>
 
         <View className="mb-4">
           <Text className="font-semibold">Email / Student ID</Text>
