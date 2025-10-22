@@ -40,6 +40,18 @@ app.get('/api/gettransaction/:transactionid',async (req, res) => {
     }
 });
 
+app.get('/api/getitems',async (req, res) =>{
+    try {
+        const {data,error} = await supabase.from("Items").select("name, price, available, description")
+        if (error) {
+            throw error
+        }
+        res.json({items:data,success:true})
+    } catch (q) {
+        res.json({success:false,message:"Items not found"})        
+    }
+})
+
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
