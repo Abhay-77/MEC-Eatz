@@ -17,6 +17,7 @@
 import React from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import "../../global.css";
+import { supabase } from "@/lib/supabase";
 
 const profile = () => {
   const favoriteItems = [
@@ -24,6 +25,11 @@ const profile = () => {
     { icon: "☕", name: "Hot Coffee", price: "₹35" },
     { icon: "🍛", name: "Chicken Biriyani", price: "₹85" },
   ];
+
+  const handleLogOut = () => {
+    supabase.auth.signOut();
+    console.log("User logged out");
+  };
 
   return (
     <ScrollView className="flex-1 bg-gray-50">
@@ -89,7 +95,7 @@ const profile = () => {
       </View>
 
       {/* Logout Button */}
-      <TouchableOpacity className="bg-red-500 rounded-xl p-4 mx-5 mb-10 items-center shadow-lg">
+      <TouchableOpacity className="bg-red-500 rounded-xl p-4 mx-5 mb-10 items-center shadow-lg" onPress={handleLogOut}>
         <Text className="text-white text-lg font-bold">Log Out</Text>
       </TouchableOpacity>
     </ScrollView>

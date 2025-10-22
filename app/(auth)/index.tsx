@@ -9,9 +9,9 @@ export default function OnboardingScreen() {
       <View className="items-center">
         <Text className="text-8xl">🍽️</Text>
         <Text className="text-4xl font-bold text-white mt-4">
-          Welcome to MEC Eatz
+          Welcome to {"\n"} MEC Eatz
         </Text>
-        <Text className="text-lg text-white/80 text-center mt-2">
+        <Text className="text-lg text-white/80 text-center mt-10">
           Your smart solution for canteen orders. Quick, easy, and cashless.
         </Text>
       </View>
