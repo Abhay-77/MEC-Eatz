@@ -1,22 +1,50 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import "../../global.css";
 import { Link } from "expo-router";
 
-export default function StudentScreen() {
-  const popularItems = [
-    { icon: "🍔", name: "Chicken Burger", price: "₹90" },
-    { icon: "☕", name: "Hot Coffee", price: "₹35" },
-    { icon: "🥪", name: "Veg Sandwich", price: "₹50" },
-  ];
+const quickActions = [
+  { icon: "📱", title: "QR Order" },
+  { icon: "💳", title: "Add Money" },
+  { icon: "📊", title: "History" },
+  { icon: "🍽️", title: "Biometric" },
+];
 
-  const menuItems = [
-    { icon: "🍛", name: "Chicken Biriyani", price: "₹85" },
-    { icon: "🍕", name: "Margherita Pizza", price: "₹120" },
-    { icon: "🥗", name: "Caesar Salad", price: "₹65" },
-  ];
+const popularItems = [
+  { icon: "🍔", name: "Chicken Burger", price: "₹90" },
+  { icon: "☕", name: "Hot Coffee", price: "₹35" },
+  { icon: "🥪", name: "Veg Sandwich", price: "₹50" },
+];
+
+const menuItems = [
+  { icon: "🍛", name: "Chicken Biriyani", price: "₹85" },
+  { icon: "🍕", name: "Margherita Pizza", price: "₹120" },
+  { icon: "🥗", name: "Caesar Salad", price: "₹65" },
+];
+
+export default function StudentScreen() {
+  const [username, setUsername] = useState("")
+
+  useEffect(() => {
+    const fetchUsername = async()=>{
+      try {
+        const res = await fetch("http://10.0.2.2:3000/api/me");
+        const data = await res.json()
+        if (!res.ok || !data.success) {
+          setUsername("Guest")
+          return
+        }
+        setUsername(data.username)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    fetchUsername()
   
+  }, [])
+  
+
   return (
     <ScrollView className="flex-1 bg-slate-900 px-5">
       {/* Header with Gradient */}
@@ -28,12 +56,8 @@ export default function StudentScreen() {
       >
         <View className="flex-row justify-between items-center">
           <View>
-            <Text className="text-white text-2xl font-bold tracking-wide">
-              Welcome to MEC Eatz!
-            </Text>
-            <Text className="text-indigo-200 text-lg mt-1 font-medium">
-              Hello, Ajay 👋
-            </Text>
+            <Text className="text-white text-2xl font-bold tracking-wide">Welcome to MEC Eatz!</Text>
+            <Text className="text-indigo-200 text-lg mt-1 font-medium">Hello, {username} 👋</Text>
           </View>
           <View className="items-end">
             <Text className="text-indigo-200 text-sm font-medium">

@@ -1,8 +1,7 @@
-import "../../global.css";
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import { supabase } from "../../lib/supabase";
 import { Link } from "expo-router";
+import React, { useState } from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import "../../global.css";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -11,12 +10,25 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    const res = await fetch("http://localhost:3000/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
     });
 
-    if (error) Alert.alert("Login Error", error.message);
+    const data = await res.json();
+
+    if (!res.ok || !data.success) {
+      alert("Login Error: " + (data.message || "Unknown error"));
+    } else {
+      alert("Login successful!");
+    }
     setLoading(false);
   };
 
