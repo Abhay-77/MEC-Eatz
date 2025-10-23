@@ -187,7 +187,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
    const logout = async () => {
      try {
        // Call your backend logout API if needed
-       await fetch("http://10.0.2.2:3000/api/logout", {
+       await fetch("https://mec-eatz.onrender.com/api/logout", {
          method: "POST",
          credentials: "include",
        });

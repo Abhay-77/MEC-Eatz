@@ -13,23 +13,6 @@ const profile = () => {
   const { user, logout } = useAuth();
   
   const username = user?.name || user?.email || "Guest";
-  // useEffect(() => {
-  //   const fetchUsername = async () => {
-  //     try {
-  //       const res = await fetch("http://10.0.2.2:3000/api/me");
-  //       const data = await res.json();
-  //       if (!res.ok || !data.success) {
-  //         setUsername("Error fetching username");
-  //         return;
-  //       }
-  //       setUsername(data.username);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchUsername();
-  // }, []);
-
   const handleLogOut = async () => {
     await logout();
     console.log("User logged out");

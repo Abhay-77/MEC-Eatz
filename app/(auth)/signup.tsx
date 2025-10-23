@@ -24,7 +24,7 @@ export default function SignUpScreen() {
     //     "Please check your email for a confirmation link.",
     //   );
     // }
-    const res = await fetch("http://10.0.2.2:3000/api/signup", {
+    const res = await fetch("https://mec-eatz.onrender.com/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
