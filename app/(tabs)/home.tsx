@@ -53,7 +53,7 @@ export default function StudentScreen() {
               Current Balance
             </Text>
             <Text className="text-green-300 font-extrabold text-3xl mt-1 tracking-wider">
-              ₹150
+              {user?.balance}
             </Text>
           </View>
         </View>
@@ -89,13 +89,17 @@ export default function StudentScreen() {
         </Link>
 
         {/* History Button */}
-        <TouchableOpacity
-          className="w-[48%] bg-white/10 rounded-xl p-5 items-center justify-center mb-3 border border-white/20 backdrop-blur-md shadow-lg"
-          onPress={() => console.log("History Pressed")}
-        >
-          <Text className="text-4xl mb-2">📊</Text>
-          <Text className="font-semibold text-center text-white">History</Text>
-        </TouchableOpacity>
+        <Link href={"/Trans_History/history"} asChild>
+          <TouchableOpacity
+            className="w-[48%] bg-white/10 rounded-xl p-5 items-center justify-center mb-3 border border-white/20 backdrop-blur-md shadow-lg"
+            onPress={() => console.log("History Pressed")}
+          >
+            <Text className="text-4xl mb-2">📊</Text>
+            <Text className="font-semibold text-center text-white">
+              History
+            </Text>
+          </TouchableOpacity>
+        </Link>
 
         {/* Biometric Button */}
         <TouchableOpacity

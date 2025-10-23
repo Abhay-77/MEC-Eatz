@@ -46,6 +46,7 @@ export default function LoginScreen() {
       const userData = {
         id: profileData.id || email,
         name: profileData.name || profileData.username || "Guest",
+        balance: profileData.balance,
       };
 
       console.log("User data to store:", userData);
