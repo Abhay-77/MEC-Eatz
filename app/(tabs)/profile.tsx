@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthProvider";
+import React, { useEffect } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import "../../global.css";
-import { supabase } from "@/lib/supabase";
 
 const favoriteItems = [
   { icon: "🍕", name: "Margherita Pizza", price: "₹120" },
@@ -10,26 +10,11 @@ const favoriteItems = [
 ];
 
 const profile = () => {
-  const [username, setUsername] = useState("");
-  useEffect(() => {
-    const fetchUsername = async () => {
-      try {
-        const res = await fetch("http://localhost:3000/api/me");
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-          setUsername("Error fetching username");
-          return;
-        }
-        setUsername(data.username);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchUsername();
-  }, []);
-
-  const handleLogOut = () => {
-    supabase.auth.signOut();
+  const { user, logout } = useAuth();
+  
+  const username = user?.name || user?.email || "Guest";
+  const handleLogOut = async () => {
+    await logout();
     console.log("User logged out");
   };
 
@@ -111,7 +96,10 @@ const profile = () => {
       </View>
 
       {/* Logout Button */}
-      <TouchableOpacity className="bg-red-500 rounded-xl p-4 mx-5 mb-10 items-center shadow-lg" onPress={handleLogOut}>
+      <TouchableOpacity
+        className="bg-red-500 rounded-xl p-4 mx-5 mb-10 items-center shadow-lg"
+        onPress={handleLogOut}
+      >
         <Text className="text-white text-lg font-bold">Log Out</Text>
       </TouchableOpacity>
     </ScrollView>

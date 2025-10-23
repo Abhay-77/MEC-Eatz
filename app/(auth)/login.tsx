@@ -1,4 +1,5 @@
-import { Link } from "expo-router";
+import { useAuth } from "@/context/AuthProvider";
+import { Link, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import "../../global.css";
@@ -8,30 +9,54 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
+  const { login } = useAuth();
   const handleLogin = async () => {
-    setLoading(true);
-    const res = await fetch("http://localhost:3000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok || !data.success) {
-      alert("Login Error: " + (data.message || "Unknown error"));
-    } else {
-      alert("Login successful!");
+    if (!email || !password) {
+      alert("Please enter both email and password");
+      return;
     }
-    setLoading(false);
-  };
 
+    setLoading(true);
+    try {
+      // First API call - Login
+      const loginRes = await fetch("https://mec-eatz.onrender.com/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+
+      const loginData = await loginRes.json();
+      console.log("Login API Response:", loginData);
+
+      if (!loginRes.ok || !loginData.success) {
+        alert("Login Error: " + (loginData.message || "Unknown error"));
+        return;
+      }
+
+      const profileData = loginData.user;
+      console.log(loginData);
+
+      const userData = {
+        id: profileData.id || email,
+        name: profileData.name || profileData.username || "Guest",
+      };
+
+      console.log("User data to store:", userData);
+      await login(userData);
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <View className="flex-1 justify-center bg-indigo-500 px-5">
       <View className="bg-white rounded-2xl p-6">

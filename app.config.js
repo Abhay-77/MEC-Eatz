@@ -3,11 +3,11 @@ import "dotenv/config";
 export default {
   expo: {
     name: "MEC Eatz",
-    slug: "mec-eatz",
+    slug: "meceatz",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/mecEatzLogo.jpg",
-    jsEngine: "jsc",
+    jsEngine: "hermes",
     scheme: "meceatz",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -15,6 +15,7 @@ export default {
       supportsTablet: true,
     },
     android: {
+      package: "com.abhaymuralim.meceatz",
       adaptiveIcon: {
         foregroundImage: "./assets/images/mecEatzLogo.jpg",
         backgroundColor: "#ffffff",
