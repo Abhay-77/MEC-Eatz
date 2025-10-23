@@ -36,15 +36,30 @@ app.post("/api/login", async (req, res) => {
       throw error;
     }
     const id = data.user.id;
+    console.log("Id",id)
     req.session.user = { id };
-    res.json({ success: true });
+    const { data:user, error:error2 } = await supabase
+      .from("Users")
+      .select("*")
+      .eq("id", id)
+      .single();
+    console.log("User:",user)
+    res.json({ success: true,user:user});
   } catch (error) {
     console.error(error);
     res.json({ message: "Login failed", success: false });
   }
 });
 
+app.get("/api/users",async(req,res)=>{
+  const { data, error: error2 } = await supabase
+    .from("Users")
+    .select("*")
+  res.json({users:data})
+})
+
 app.post("/api/signup", async (req, res) => {
+    console.log("Signup")
   try {
     const { username, email, password } = req.body;
     const { data, error } = await supabase.auth.signUp({
@@ -68,22 +83,18 @@ app.post("/api/signup", async (req, res) => {
   }
 });
 
-app.get("/api/me", requireLogin, async (req, res) => {
+app.post("/api/logout",async(req,res)=>{
   try {
-    const userId = req.session.user.id;
-    const { username, error } = await supabase
-      .from("Users")
-      .select("name")
-      .eq("id", userId);
+    const {error} = await supabase.auth.signOut()
     if (error) {
-      throw error;
+      throw error
     }
-    res.json({ success: true, username: username });
+    res.json({success:true})
   } catch (error) {
-    console.error(error);
-    res.json({ success: false });
+    console.error(error)
+    res.json({success:false})
   }
-});
+})
 
 app.get("/api/gettransactionhistory", requireLogin, async (req, res) => {
   try {

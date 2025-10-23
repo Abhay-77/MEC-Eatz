@@ -1,7 +1,7 @@
-import { Text, TouchableOpacity, View } from "react-native";
 import { Tabs } from "expo-router";
 import { House, User } from "lucide-react-native";
 import { useState } from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function Layout() {
   const [activeTab, setActiveTab] = useState("index");
@@ -72,7 +72,7 @@ export default function Layout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => <House size={20} color={color} />,

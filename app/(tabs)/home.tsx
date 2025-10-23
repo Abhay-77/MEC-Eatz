@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import "../../global.css";
 import { Link } from "expo-router";
+import { useAuth } from "@/context/AuthProvider";
 
 const quickActions = [
   { icon: "📱", title: "QR Order" },
@@ -24,26 +25,10 @@ const menuItems = [
 ];
 
 export default function StudentScreen() {
-  const [username, setUsername] = useState("")
-
-  useEffect(() => {
-    const fetchUsername = async()=>{
-      try {
-        const res = await fetch("http://10.0.2.2:3000/api/me");
-        const data = await res.json()
-        if (!res.ok || !data.success) {
-          setUsername("Guest")
-          return
-        }
-        setUsername(data.username)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-    fetchUsername()
-  
-  }, [])
-  
+  const { user } = useAuth();
+  const [items, setItems] = useState<any[]>([])
+  // Get username from auth context
+  const username = user?.name || user?.email || "Guest";  
 
   return (
     <ScrollView className="flex-1 bg-slate-900 px-5">
@@ -56,8 +41,12 @@ export default function StudentScreen() {
       >
         <View className="flex-row justify-between items-center">
           <View>
-            <Text className="text-white text-2xl font-bold tracking-wide">Welcome to MEC Eatz!</Text>
-            <Text className="text-indigo-200 text-lg mt-1 font-medium">Hello, {username} 👋</Text>
+            <Text className="text-white text-2xl font-bold tracking-wide">
+              Welcome to MEC Eatz!
+            </Text>
+            <Text className="text-indigo-200 text-lg mt-1 font-medium">
+              Hello, {username} 👋
+            </Text>
           </View>
           <View className="items-end">
             <Text className="text-indigo-200 text-sm font-medium">
@@ -73,22 +62,30 @@ export default function StudentScreen() {
       {/* Hardcoded Quick Actions */}
       <View className="flex-row flex-wrap justify-between mb-6">
         {/* QR Order Button */}
-        <TouchableOpacity
-          className="w-[48%] bg-white/10 rounded-xl p-5 items-center justify-center mb-3 border border-white/20 backdrop-blur-md shadow-lg"
-          onPress={() => console.log("QR Order Pressed")}
+        <Link
+          href={{
+            pathname: "/Cart/cart",
+            params: { items: JSON.stringify(items) },
+          }}
+          asChild
         >
-          <Text className="text-4xl mb-2">📱</Text>
-          <Text className="font-semibold text-center text-white">QR Order</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            className="w-[48%] bg-white/10 rounded-xl p-5 items-center justify-center mb-3 border border-white/20 backdrop-blur-md shadow-lg"
+            onPress={() => console.log("Order Pressed")}
+          >
+            <Text className="text-4xl mb-2">📱</Text>
+            <Text className="font-semibold text-center text-white">Order</Text>
+          </TouchableOpacity>
+        </Link>
 
         {/* Add Money Button */}
-        <Link href={'/Pay/paymentredirecting'} asChild>
-        <TouchableOpacity
-          className="w-[48%] bg-white/10 rounded-xl p-5 items-center justify-center mb-3 border border-white/20 backdrop-blur-md shadow-lg"
-          >
-          <Text className="text-4xl mb-2">💳</Text>
-          <Text className="font-semibold text-center text-white">Add Money</Text>
-        </TouchableOpacity>
+        <Link href={"/Pay/paymentredirecting"} asChild>
+          <TouchableOpacity className="w-[48%] bg-white/10 rounded-xl p-5 items-center justify-center mb-3 border border-white/20 backdrop-blur-md shadow-lg">
+            <Text className="text-4xl mb-2">💳</Text>
+            <Text className="font-semibold text-center text-white">
+              Add Money
+            </Text>
+          </TouchableOpacity>
         </Link>
 
         {/* History Button */}
@@ -106,22 +103,34 @@ export default function StudentScreen() {
           onPress={() => console.log("Biometric Pressed")}
         >
           <Text className="text-4xl mb-2">🍽️</Text>
-          <Text className="font-semibold text-center text-white">Biometric</Text>
+          <Text className="font-semibold text-center text-white">
+            Biometric
+          </Text>
         </TouchableOpacity>
       </View>
 
       {/* Popular Items Section */}
       <View className="mb-6">
-        <Text className="text-xl font-bold mb-4 text-white">Popular Today 🔥</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="py-2">
+        <Text className="text-xl font-bold mb-4 text-white">
+          Popular Today 🔥
+        </Text>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          className="py-2"
+        >
           {popularItems.map((item) => (
             <View
               key={item.name}
               className="bg-white/10 rounded-xl p-4 mr-4 shadow-lg w-40 items-center border border-white/20"
             >
               <Text className="text-4xl mb-2">{item.icon}</Text>
-              <Text className="font-semibold text-center text-white">{item.name}</Text>
-              <Text className="text-indigo-400 font-bold mt-1 text-lg">{item.price}</Text>
+              <Text className="font-semibold text-center text-white">
+                {item.name}
+              </Text>
+              <Text className="text-indigo-400 font-bold mt-1 text-lg">
+                {item.price}
+              </Text>
             </View>
           ))}
         </ScrollView>
@@ -129,7 +138,9 @@ export default function StudentScreen() {
 
       {/* Today's Menu Section */}
       <View className="bg-white rounded-2xl p-6 mb-6 shadow-xl">
-        <Text className="text-xl font-bold mb-4 text-gray-800">Today's Menu 🍽️</Text>
+        <Text className="text-xl font-bold mb-4 text-gray-800">
+          Today's Menu 🍽️
+        </Text>
         {menuItems.map((item, index) => (
           <View
             key={item.name}
@@ -139,10 +150,15 @@ export default function StudentScreen() {
           >
             <Text className="text-3xl mr-4">{item.icon}</Text>
             <View className="flex-1">
-              <Text className="font-semibold text-lg text-gray-800">{item.name}</Text>
+              <Text className="font-semibold text-lg text-gray-800">
+                {item.name}
+              </Text>
               <Text className="text-indigo-600 font-bold">{item.price}</Text>
             </View>
-            <TouchableOpacity className="bg-indigo-600 rounded-full w-10 h-10 items-center justify-center">
+            <TouchableOpacity
+              onPress={() => setItems([...items, item])}
+              className="bg-indigo-600 rounded-full w-10 h-10 items-center justify-center"
+            >
               <Text className="text-white text-2xl">+</Text>
             </TouchableOpacity>
           </View>
