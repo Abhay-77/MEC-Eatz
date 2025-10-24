@@ -45,6 +45,7 @@ const TransactionHistory = () => {
       try {
         const res = await fetch(
           "https://mec-eatz.onrender.com/api/gettransactionhistory"
+          // "https://localhost:3000/api/gettransactionhistory"
         );
 
         if (!res.ok) {

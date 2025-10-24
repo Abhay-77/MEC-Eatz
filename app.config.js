@@ -1,6 +1,6 @@
 import "dotenv/config";
 
-export default {
+export default({config})=>( {
   expo: {
     name: "MEC Eatz",
     slug: "meceatz",
@@ -47,8 +47,8 @@ export default {
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseAnonKey: process.env.SUPABASE_ANON_KEY,
       eas: {
-        projectId: process.env.EAS_PROJECT_ID, // optional if you're using EAS
+        projectId: process.env.EAS_PROJECT_ID || "12dfff59-e135-4214-af99-5082703263ce",
       },
     },
   },
-};
+});

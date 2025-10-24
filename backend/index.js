@@ -103,6 +103,7 @@ app.get("/api/gettransactionhistory", requireLogin, async (req, res) => {
       .from("Transaction_History")
       .select("id, price, created_at")
       .eq("user_id", userId);
+    console.log(data)
     if (error) {
       throw error;
     }
