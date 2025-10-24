@@ -99,10 +99,9 @@ app.post("/api/logout",async(req,res)=>{
 app.get("/api/gettransactionhistory", requireLogin, async (req, res) => {
   try {
     const userId = req.session.user.id;
-    console.log(userId);
     const { data, error } = await supabase
       .from("Transaction_History")
-      .select(["id", "price", "created_at"])
+      .select("id, price, created_at")
       .eq("user_id", userId);
     if (error) {
       throw error;
